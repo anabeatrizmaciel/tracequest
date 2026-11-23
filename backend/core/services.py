@@ -317,7 +317,7 @@ def teacher_dashboard():
         "totalStudents": total_students,
         "completionRate": round(100 * completed / denom) if denom else 0,
         "average": round(sum(r["score"] for r in rows) / len(rows)) if rows else 0,
-        "topDifficulty": KIND_LABEL[top_kind(wrong)] if wrong else "—",
+        "topDifficulty": KIND_LABEL[top_kind(wrong)] if wrong else "Sem erros",
         "difficulties": difficulties,
         "recent": recent[:5],
     }

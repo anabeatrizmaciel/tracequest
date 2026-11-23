@@ -178,7 +178,7 @@ def _grade_association(challenge, answer):
     return {
         "correct": False,
         "feedback": {
-            "title": "Quase! — revise as conexões",
+            "title": "Quase! Revise as conexões",
             "subtitle": "Algum rastro foi conectado à evidência errada.",
             "sections": sections,
             "summary": f"{len(right) + (1 if example else 0)}/{total} relações corretas",
@@ -234,7 +234,7 @@ def _grade_coverage(challenge, answer):
     return {
         "correct": False,
         "feedback": {
-            "title": "Quase! — revise a cobertura",
+            "title": "Quase! Revise a cobertura",
             "subtitle": "A classificação escolhida não corresponde às evidências.",
             "sections": sections,
             "summary": COVERAGE_LABEL[choice],
@@ -288,7 +288,7 @@ def _grade_missing(challenge, answer):
     return {
         "correct": False,
         "feedback": {
-            "title": "Quase! — revise a evidência escolhida",
+            "title": "Quase! Revise a evidência escolhida",
             "subtitle": "O teste selecionado não completa a cobertura.",
             "sections": sections,
             "summary": chosen.code,
