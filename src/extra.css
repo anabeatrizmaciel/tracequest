@@ -1,0 +1,94 @@
+/* Complementos do TraceQuest funcional.
+   O visual base vem de styles.css (design do protótipo); aqui ficam apenas os
+   elementos novos (estados de carregamento/erro, busca real, menu do usuário,
+   editor de exercícios, etc.) e pequenos ajustes de layout. */
+
+.muted { color: var(--muted); font-size: 13px; }
+.pad { padding: 18px; }
+
+/* busca do cabeçalho (agora é um formulário real) */
+.search-box input { flex: 1; min-width: 0; border: 0; background: transparent; outline: none; color: var(--navy); font-size: 13px; }
+.search-box input::placeholder { color: var(--muted); }
+
+/* menu do usuário */
+.user-menu { position: relative; }
+.user-button { cursor: pointer; border-radius: 14px; padding: 4px 8px; }
+.user-button:hover { background: #f6f3ff; }
+.user-dropdown { position: absolute; right: 0; top: calc(100% + 6px); min-width: 210px; background: #fff; border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); padding: 10px; display: flex; flex-direction: column; gap: 8px; z-index: 30; }
+.user-dropdown small { color: var(--muted); padding: 0 6px; word-break: break-all; }
+.user-dropdown button { border: 0; background: var(--pink-soft); color: var(--pink); font-weight: 800; padding: 9px; border-radius: 10px; }
+
+/* carregando / erro / avisos */
+.state-box { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 38px 20px; background: #fff; border: 1px dashed var(--line); border-radius: 18px; color: var(--muted); font-weight: 700; text-align: center; }
+.error-box { border-color: #f6b9cd; background: #fff5f8; color: #b3224f; }
+.spinner { width: 28px; height: 28px; border-radius: 50%; border: 4px solid var(--lavender); border-top-color: #6d52cb; animation: tq-spin 0.8s linear infinite; }
+@keyframes tq-spin { to { transform: rotate(360deg); } }
+.banner { padding: 11px 14px; border-radius: 12px; font-weight: 700; font-size: 13px; margin: 6px 0; }
+.banner ul { margin: 6px 0 0; padding-left: 20px; font-weight: 600; }
+.banner-error { background: #fff0f4; border: 1px solid #f6b9cd; color: #b3224f; }
+.banner-info { background: var(--lavender); border: 1px solid var(--lavender-strong); color: #44308a; }
+.banner-success { background: var(--mint); border: 1px solid #b9ead2; color: var(--green); }
+
+/* login */
+.login-top > a.brand { font-size: 28px; font-weight: 700; }
+.login-card .login-options { align-items: center; }
+.link-button-plain { background: none; border: 0; padding: 4px; color: var(--muted); font-weight: 800; font-size: 12px; text-decoration: underline; }
+.link-button-plain.center { display: block; margin: 8px auto 0; }
+.center-link { display: block; text-align: center; margin-top: 10px; color: var(--muted); font-weight: 800; font-size: 13px; }
+.login-card .primary-button { width: 100%; margin-top: 8px; }
+.login-card .banner { margin-top: 10px; }
+
+/* filtros e cartões */
+.filter-row { margin-bottom: 14px; }
+.filter-row label { display: inline-flex; flex-direction: column; gap: 6px; font-size: 12px; font-weight: 800; }
+.filter-row select { height: 42px; min-width: 280px; border: 1px solid var(--line); border-radius: 12px; padding: 0 12px; background: #fff; color: var(--navy); }
+.investigation-card .expected { display: block; margin-top: 4px; font-size: 11px; font-weight: 700; color: var(--muted); }
+.mission-copy .secondary-button { margin-left: 10px; }
+.mission-card.locked { opacity: 0.6; }
+
+/* lista de exercícios: 3 ações por linha */
+.exercise-row { grid-template-columns: 70px 1fr 100px auto; }
+.row-actions { flex-wrap: wrap; justify-content: flex-end; }
+.row-actions button:disabled { opacity: 0.5; cursor: wait; }
+
+/* editor de exercícios */
+.form-grid input[type='number'] { width: 100%; }
+.relation-builder { grid-template-columns: 150px 50px 150px 1fr 36px; align-items: start; }
+.relation-builder .relation-arrow { padding-top: 10px; }
+.remove-btn { width: 34px; height: 34px; font-size: 18px; font-weight: 900; }
+.optional-challenge { border: 1px dashed var(--lavender-strong); border-radius: 16px; padding: 16px 18px; margin-top: 18px; display: flex; flex-direction: column; gap: 14px; }
+.optional-challenge .check-line { font-size: 13px; font-weight: 800; display: flex; gap: 8px; align-items: center; }
+.challenge-editor { display: flex; flex-direction: column; gap: 14px; }
+.challenge-editor label { display: flex; flex-direction: column; gap: 7px; font-size: 12px; font-weight: 800; }
+.challenge-editor select, .challenge-editor textarea { border: 1px solid var(--line); border-radius: 11px; padding: 11px; color: var(--navy); background: #fff; outline: none; width: 100%; }
+.challenge-editor textarea { min-height: 70px; resize: vertical; }
+.field-label { display: block; font-size: 12px; margin-bottom: 8px; }
+.check-list { display: flex; flex-direction: column; gap: 8px; }
+.check-chip { display: flex; flex-direction: row; align-items: center; gap: 10px; background: #fff; border: 1.5px solid var(--line); border-radius: 12px; padding: 9px 12px; font-weight: 600; font-size: 13px; cursor: pointer; }
+.check-chip input { width: auto; }
+.check-chip.on { border-color: #6d52cb; background: var(--lavender); }
+.check-chip span { color: var(--muted); font-size: 12px; }
+.banner.banner-error b { display: block; }
+
+/* resultado individual */
+.exercise-block h4 { font-family: 'Fredoka'; margin: 16px 0 4px; display: flex; gap: 10px; align-items: center; }
+.done-tag, .todo-tag { font-family: 'Nunito'; font-style: normal; font-size: 10px; font-weight: 900; padding: 3px 9px; border-radius: 999px; }
+.done-tag { background: var(--mint); color: var(--green); }
+.todo-tag { background: #fff0d8; color: #9b641f; }
+.answers-panel { margin-top: 16px; }
+.answers-list { display: flex; flex-direction: column; }
+.answer-row { display: grid; grid-template-columns: 26px 1.6fr 1fr auto; gap: 12px; align-items: center; padding: 10px 0; border-top: 1px solid var(--line); font-size: 13px; }
+.answer-row.ok > span { color: var(--green); font-weight: 900; }
+.answer-row.bad > span { color: #c85235; font-weight: 900; }
+.answer-row small, .answer-row time { color: var(--muted); font-size: 12px; }
+
+@media (max-width: 1100px) {
+  .exercise-row { grid-template-columns: 60px 1fr 90px; }
+  .relation-builder { grid-template-columns: 1fr 40px 1fr 36px; }
+  .relation-builder textarea { grid-column: 1 / -1; }
+  .answer-row { grid-template-columns: 26px 1fr; }
+}
+@media (max-width: 700px) {
+  .relation-builder { grid-template-columns: 1fr; }
+  .filter-row select { min-width: 0; width: 100%; }
+}

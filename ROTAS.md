@@ -1,31 +1,44 @@
-# Rotas do front-end
+# Rotas
 
-## Geral
+## Front-end
+
+### Geral
 - `/` — escolha de perfil
-- `/login/aluno` — login do estudante
+- `/login/aluno` — login/cadastro do estudante
 - `/login/professor` — login da professora
 
-## Estudante
+### Estudante (exige login de estudante)
 - `/aluno/inicio`
-- `/aluno/missoes`
-- `/aluno/missao/2`
-- `/aluno/desafio/1`
-- `/aluno/feedback/1/correto`
-- `/aluno/feedback/1/erro`
-- `/aluno/desafio/2`
-- `/aluno/feedback/2/correto`
-- `/aluno/feedback/2/erro`
-- `/aluno/desafio/3`
-- `/aluno/feedback/3/correto`
-- `/aluno/feedback/3/erro`
-- `/aluno/missao-concluida`
+- `/aluno/missoes` (aceita `?q=` para buscar)
+- `/aluno/missao/:id`
+- `/aluno/missao/:id/desafio/:n`
+- `/aluno/missao/:id/desafio/:n/feedback` — acerto ou erro, conforme a última tentativa
+- `/aluno/missao/:id/concluida`
 - `/aluno/progresso`
 - `/aluno/conquistas`
 
-## Professora
+### Professora (exige login de professora)
 - `/professor/dashboard`
-- `/professor/exercicios`
+- `/professor/exercicios` (aceita `?q=`)
 - `/professor/exercicios/novo`
-- `/professor/exercicios/relacoes`
-- `/professor/resultados`
-- `/professor/resultados/ana`
+- `/professor/exercicios/:id/editar`
+- `/professor/resultados` (aceita `?exercise=:id`)
+- `/professor/resultados/:studentId`
+
+## API (`/api`, autenticação `Authorization: Bearer <token>`)
+
+| Método | Rota | Perfil |
+| --- | --- | --- |
+| POST | `auth/login`, `auth/register` | público |
+| GET | `student/home`, `student/missions`, `student/progress`, `student/achievements` | estudante |
+| GET | `student/missions/:id` | estudante |
+| POST | `student/missions/:id/start` | estudante |
+| GET | `student/missions/:id/challenges/:n` | estudante |
+| POST | `student/missions/:id/challenges/:n/submit` | estudante |
+| GET | `student/missions/:id/challenges/:n/feedback` | estudante |
+| GET | `student/missions/:id/result` | estudante |
+| GET | `teacher/dashboard`, `teacher/exercises`, `teacher/results`, `teacher/results.csv` | professora |
+| POST | `teacher/exercises/new` | professora |
+| GET/PUT | `teacher/exercises/:id` | professora |
+| POST | `teacher/exercises/:id/status` | professora |
+| GET | `teacher/students/:id` | professora |
