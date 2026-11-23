@@ -64,6 +64,13 @@ def challenge_payload(challenge, student):
             {"code": r.test_case.code, "text": r.test_case.description, "expected": r.test_case.expected}
             for r in relations
         ]
+        # testes fora do gabarito entram como distratores
+        related = {r.test_case_id for r in relations}
+        tests += [
+            {"code": t.code, "text": t.description, "expected": t.expected}
+            for t in ex.test_cases.all()
+            if t.pk not in related
+        ]
         base.update(
             requirements=[{"code": r.requirement.code, "text": r.requirement.description} for r in relations],
             tests=shuffled(tests, student.pk * 1000 + challenge.pk),
