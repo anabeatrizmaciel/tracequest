@@ -1,0 +1,6 @@
+Coloque aqui os arquivos oficiais do TraceQuest, por exemplo:
+- tracequest-logo.png ou tracequest-logo.svg
+- trace-mascote.png
+- trace-professora.png (opcional)
+
+O front-end funciona sem esses arquivos porque a marca atual é desenhada em CSS.
