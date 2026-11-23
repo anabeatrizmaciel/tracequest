@@ -182,7 +182,7 @@ function ChallengeHeader({ exercise, order, title, instruction }) {
 
 function InvestigationCard({ item, selected, example, onClick, disabled }) {
   return (
-    <button type="button" disabled={disabled} onClick={onClick} className={`investigation-card ${selected ? 'selected' : ''} ${example ? 'example' : ''}`}>
+    <button type="button" disabled={disabled} onClick={onClick} aria-pressed={!!selected} className={`investigation-card ${selected ? 'selected' : ''} ${example ? 'example' : ''}`}>
       <div><b>{item.code}</b><span className="radio">{selected ? '●' : '○'}</span></div>
       <p>{item.text}</p>
       {item.expected && <small className="expected">Esperado: {item.expected}</small>}
@@ -307,7 +307,7 @@ function CoverageChallenge({ challenge: c, missionId }) {
         <div className="evidence-row">{c.evidence.map((t) => <article key={t.code}><b>{t.code}</b><p>{t.text}</p></article>)}</div>
         <h3 className="question-title">Como está a cobertura deste requisito?</h3>
         <div className="choice-grid">{c.options.map((o) => (
-          <button type="button" key={o.id} className={choice === o.id ? 'choice-card selected-choice' : 'choice-card'} onClick={() => setChoice(o.id)}>
+          <button type="button" key={o.id} aria-pressed={choice === o.id} className={choice === o.id ? 'choice-card selected-choice' : 'choice-card'} onClick={() => setChoice(o.id)}>
             <span>{choice === o.id ? '●' : '○'}</span><div><b>{o.title}</b><p>{o.text}</p></div>
           </button>
         ))}</div>
@@ -330,7 +330,7 @@ function MissingChallenge({ challenge: c, missionId }) {
         <div className="evidence-existing"><span>Já temos:</span>{c.evidence.map((t) => <b key={t.code}>{t.code} · {t.text}</b>)}</div>
         <h3 className="question-title">Qual caso de teste deveria ser acrescentado ao conjunto?</h3>
         <div className="vertical-choices">{c.options.map((o) => (
-          <button type="button" key={o.code} className={choice === o.code ? 'choice-card selected-choice' : 'choice-card'} onClick={() => setChoice(o.code)}>
+          <button type="button" key={o.code} aria-pressed={choice === o.code} className={choice === o.code ? 'choice-card selected-choice' : 'choice-card'} onClick={() => setChoice(o.code)}>
             <span>{choice === o.code ? '●' : '○'}</span><div><b>{o.code}</b><p>{o.text}</p></div>
           </button>
         ))}</div>
