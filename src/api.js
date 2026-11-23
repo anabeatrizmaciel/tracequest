@@ -44,7 +44,11 @@ async function request(method, path, body, { raw = false } = {}) {
   try { data = await res.json(); } catch { /* resposta sem corpo */ }
   if (!res.ok) {
     if (res.status === 401 && session.token) onUnauthorized();
-    throw new ApiError(data?.error || 'Algo deu errado. Tente novamente.', res.status, data);
+    const offline = !data && res.status >= 500;
+    const fallback = offline
+      ? 'Não foi possível falar com o servidor. Verifique se o backend está rodando.'
+      : 'Algo deu errado. Tente novamente.';
+    throw new ApiError(data?.error || fallback, res.status, data);
   }
   return data;
 }

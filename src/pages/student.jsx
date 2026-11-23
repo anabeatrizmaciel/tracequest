@@ -370,7 +370,7 @@ export function FeedbackPage() {
               <div className="feedback-banner"><span>{correct ? '✓' : '↺'}</span><div><b>{correct ? 'Evidência confirmada' : 'Pista para revisar'}</b><small>{correct ? 'Seu raciocínio está consistente.' : 'Use o feedback para tentar novamente.'}</small></div></div>
               <div className="feedback-sections">{f.sections.map((s, i) => <article key={s.title}><span>{String(i + 1).padStart(2, '0')}</span><div><h3>{s.title}</h3><p>{s.text}</p></div></article>)}</div>
               <div className="feedback-footer">
-                <div className="trace-tip"><span className="mini-mascot">⌕</span><b>Trace diz:</b><p>{correct ? 'Excelente! Continue seguindo as evidências.' : 'Errar faz parte da investigação — compare as pistas e tente de novo.'}</p></div>
+                <div className="trace-tip"><span className="mini-mascot">⌕</span><b>Trace diz:</b><p>{correct ? 'Excelente! Continue seguindo as evidências.' : 'Errar faz parte da investigação: compare as pistas e tente de novo.'}</p></div>
                 <button className="primary-button" onClick={go}>{label} →</button>
               </div>
             </section>
@@ -440,7 +440,7 @@ export function ProgressPage() {
           <section className="stats-grid">
             <StatCard value={`${p.missionsDone} de ${p.missionsTotal}`} label="Missões concluídas" tone="pink" />
             <StatCard value={`${p.xp} XP`} label="Experiência acumulada" tone="lavender" />
-            <StatCard value={p.attempts ? `${p.accuracy}%` : '—'} label="Taxa de acerto" tone="mint" hint={`${p.attempts} tentativa(s)`} />
+            <StatCard value={p.attempts ? `${p.accuracy}%` : '-'} label="Taxa de acerto" tone="mint" hint={`${p.attempts} tentativa(s)`} />
             <StatCard value={p.achievements} label="Conquistas" tone="yellow" />
           </section>
           <section className="panel progress-list"><h3>Domínio por habilidade</h3>{p.skills.map((s) => <SkillProgress key={s.label} {...s} />)}</section>

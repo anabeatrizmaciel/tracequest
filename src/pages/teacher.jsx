@@ -24,7 +24,7 @@ export function TeacherDashboard() {
           <section className="stats-grid teacher-stats">
             <StatCard value={d.activeStudents} label="Alunos ativos" tone="lavender" hint={`de ${d.totalStudents} cadastrados`} />
             <StatCard value={`${d.completionRate}%`} label="Atividades concluídas" tone="mint" />
-            <StatCard value={d.average ? `${d.average} pts` : '—'} label="Média da turma" tone="pink" />
+            <StatCard value={d.average ? `${d.average} pts` : '-'} label="Média da turma" tone="pink" />
             <StatCard value={d.topDifficulty} label="Maior dificuldade" tone="yellow" />
           </section>
           <section className="teacher-grid">
@@ -180,7 +180,7 @@ function CoverageEditor({ form, setForm }) {
       <label>Requisito analisado
         <select value={c.requirement} onChange={(e) => set({ requirement: e.target.value })}>
           <option value="">Selecione</option>
-          {form.requirements.map((r) => <option key={r.code} value={r.code}>{r.code} — {r.description.slice(0, 50)}</option>)}
+          {form.requirements.map((r) => <option key={r.code} value={r.code}>{r.code}: {r.description.slice(0, 50)}</option>)}
         </select>
       </label>
       <div><b className="field-label">Evidências exibidas ao estudante</b><CheckList label="Evidências" options={form.tests} value={c.evidence} onChange={(evidence) => set({ evidence })} /></div>
@@ -204,7 +204,7 @@ function MissingEditor({ form, setForm }) {
       <label>Requisito analisado
         <select value={m.requirement} onChange={(e) => set({ requirement: e.target.value })}>
           <option value="">Selecione</option>
-          {form.requirements.map((r) => <option key={r.code} value={r.code}>{r.code} — {r.description.slice(0, 50)}</option>)}
+          {form.requirements.map((r) => <option key={r.code} value={r.code}>{r.code}: {r.description.slice(0, 50)}</option>)}
         </select>
       </label>
       <div><b className="field-label">Evidências que já existem</b><CheckList label="Evidências existentes" options={form.tests} value={m.evidence} onChange={(evidence) => set({ evidence })} /></div>
@@ -370,9 +370,9 @@ export function ResultsPage() {
           </div>
           <section className="stats-grid">
             <StatCard value={r.summary.participants} label="Participantes" tone="lavender" />
-            <StatCard value={r.students.length ? r.summary.average : '—'} label="Média da turma" tone="pink" />
-            <StatCard value={r.students.length ? `${r.summary.firstTry}/${r.summary.questions}` : '—'} label="Acertos de primeira (média)" tone="mint" />
-            <StatCard value={r.students.length ? formatMinutes(r.summary.minutes) : '—'} label="Tempo médio" tone="yellow" />
+            <StatCard value={r.students.length ? r.summary.average : '-'} label="Média da turma" tone="pink" />
+            <StatCard value={r.students.length ? `${r.summary.firstTry}/${r.summary.questions}` : '-'} label="Acertos de primeira (média)" tone="mint" />
+            <StatCard value={r.students.length ? formatMinutes(r.summary.minutes) : '-'} label="Tempo médio" tone="yellow" />
           </section>
           <section className="results-table panel">
             <div className="table-head"><span>Estudante</span><span>Nota</span><span>Acertos de 1ª</span><span>Tempo</span><span>Maior dificuldade</span><span /></div>

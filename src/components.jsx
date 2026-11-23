@@ -138,7 +138,7 @@ export function Banner({ kind = 'error', children }) {
 }
 
 export function formatMinutes(min) {
-  if (min == null) return '—';
+  if (min == null) return '-';
   if (min < 60) return `${min} min`;
   return `${Math.floor(min / 60)} h ${min % 60} min`;
 }
