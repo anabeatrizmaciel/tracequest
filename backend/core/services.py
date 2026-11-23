@@ -243,7 +243,7 @@ def challenge_scores(student, exercise):
         "minutes": minutes,
         "completed": bool(session and session.completed_at),
         "attempted": bool(attempts),
-        "wrong": Counter(a.kind for a in attempts if not a.correct),
+        "wrong": Counter(a.kind for a in scored_attempts(student) if a.exercise_id == exercise.pk and not a.correct),
     }
 
 

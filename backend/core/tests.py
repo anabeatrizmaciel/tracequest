@@ -127,6 +127,8 @@ class ApiTests(TestCase):
         before = self.call("get", "student/progress", token=student).json()
         self.assertEqual(before["accuracy"], 100)
 
+        dash_before = self.call("get", "teacher/dashboard", token=teacher).json()
+
         # "Rever desafios": erra três vezes de propósito depois de já ter acertado
         for _ in range(3):
             self.assertFalse(self.submit(student, m1, 1, WRONG1).json()["correct"])
@@ -139,6 +141,16 @@ class ApiTests(TestCase):
         self.assertEqual(detail["accuracy"], after["accuracy"])
         self.assertEqual(detail["score"], 100)
         self.assertEqual(detail["firstTry"], 1)
+        # erros só em revisão não geram dificuldade registrada
+        self.assertEqual(detail["review"]["tags"], [])
+        self.assertEqual(detail["review"]["title"], "Sem dificuldades registradas")
+        row = next(r for r in self.call("get", "teacher/results", token=teacher).json()["students"] if r["id"] == ana.pk)
+        self.assertEqual(row["score"], 100)
+        self.assertEqual(row["difficulty"], "Sem erros")
+        # o dashboard da turma também ignora os erros de revisão
+        dash_after = self.call("get", "teacher/dashboard", token=teacher).json()
+        self.assertEqual(dash_after["difficulties"], dash_before["difficulties"])
+        self.assertEqual(dash_after["topDifficulty"], dash_before["topDifficulty"])
         # nenhuma tentativa é descartada: a lista da professora mostra todas, inclusive as de revisão
         self.assertEqual(len(detail["answers"]), 4)
 
