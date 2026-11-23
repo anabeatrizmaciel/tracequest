@@ -117,6 +117,31 @@ class ApiTests(TestCase):
         fb = self.call("get", f"student/missions/{m2}/challenges/3/feedback", token=token).json()
         self.assertTrue(fb["correct"] and fb["isLast"])
 
+    def test_review_attempts_do_not_change_accuracy(self):
+        student = self.login("ana@uea.edu.br")
+        teacher = self.login("camila@uea.edu.br")
+        m1 = self.mission_ids(student)["Primeiros Rastros"]["id"]
+        ana = User.objects.get(email="ana@uea.edu.br")
+
+        self.assertTrue(self.submit(student, m1, 1, RIGHT1).json()["correct"])
+        before = self.call("get", "student/progress", token=student).json()
+        self.assertEqual(before["accuracy"], 100)
+
+        # "Rever desafios": erra três vezes de propósito depois de já ter acertado
+        for _ in range(3):
+            self.assertFalse(self.submit(student, m1, 1, WRONG1).json()["correct"])
+
+        after = self.call("get", "student/progress", token=student).json()
+        detail = self.call("get", f"teacher/students/{ana.pk}", token=teacher).json()
+        self.assertEqual(after["accuracy"], 100)
+        self.assertEqual(after["attempts"], 1)
+        self.assertEqual(after["xp"], before["xp"])
+        self.assertEqual(detail["accuracy"], after["accuracy"])
+        self.assertEqual(detail["score"], 100)
+        self.assertEqual(detail["firstTry"], 1)
+        # nenhuma tentativa é descartada: a lista da professora mostra todas, inclusive as de revisão
+        self.assertEqual(len(detail["answers"]), 4)
+
     def test_challenge_payload_hides_answer(self):
         token = self.login("ana@uea.edu.br")
         mid = self.mission_ids(token)["Primeiros Rastros"]["id"]

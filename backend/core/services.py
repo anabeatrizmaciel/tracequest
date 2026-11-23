@@ -157,14 +157,28 @@ def student_home(student):
     }
 
 
+def scored_attempts(student):
+    """Tentativas que contam como avaliação: de cada desafio, todas até o primeiro acerto (inclusive).
+    As feitas depois do acerto são revisão e não entram."""
+    counted, solved = [], set()
+    for att in Attempt.objects.filter(student=student):
+        key = (att.exercise_id, att.order)
+        if key in solved:
+            continue
+        counted.append(att)
+        if att.correct:
+            solved.add(key)
+    return counted
+
+
 def student_progress(student):
     base = student_home(student)
-    attempts = Attempt.objects.filter(student=student)
-    total, correct = attempts.count(), attempts.filter(correct=True).count()
+    attempts = scored_attempts(student)
+    total, correct = len(attempts), sum(1 for a in attempts if a.correct)
     skills = []
     for kind in (Challenge.ASSOCIATION, Challenge.COVERAGE, Challenge.MISSING):
-        k_total = attempts.filter(kind=kind).count()
-        k_ok = attempts.filter(kind=kind, correct=True).count()
+        k_total = sum(1 for a in attempts if a.kind == kind)
+        k_ok = sum(1 for a in attempts if a.kind == kind and a.correct)
         skills.append(
             {
                 "label": KIND_DESCRIPTION[kind],
@@ -331,8 +345,9 @@ def student_detail(student):
     wrong = Counter()
     for s in stats:
         wrong.update(s["wrong"])
-    total_attempts = Attempt.objects.filter(student=student).count()
-    correct_attempts = Attempt.objects.filter(student=student, correct=True).count()
+    scored = scored_attempts(student)
+    total_attempts = len(scored)
+    correct_attempts = sum(1 for a in scored if a.correct)
     if wrong:
         title, text = REVIEW_TEXT[top_kind(wrong)]
         tags = [KIND_LABEL[k] for k in sorted(wrong, key=lambda k: (-wrong[k], KIND_ORDER.index(k)))]
