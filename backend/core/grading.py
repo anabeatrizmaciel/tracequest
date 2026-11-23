@@ -64,12 +64,18 @@ def challenge_payload(challenge, student):
             {"code": r.test_case.code, "text": r.test_case.description, "expected": r.test_case.expected}
             for r in relations
         ]
-        # testes fora do gabarito entram como distratores
+        # testes fora do gabarito entram como distratores, desde que não sejam conteúdo de outro desafio
         related = {r.test_case_id for r in relations}
+        used = set()
+        for other in ex.challenges.exclude(pk=challenge.pk):
+            used.update(other.evidence.values_list("pk", flat=True))
+            used.update(other.candidates.values_list("pk", flat=True))
+            if other.kind == Challenge.MISSING:
+                used.update(ex.test_cases.filter(code=other.correct_answer).values_list("pk", flat=True))
         tests += [
             {"code": t.code, "text": t.description, "expected": t.expected}
             for t in ex.test_cases.all()
-            if t.pk not in related
+            if t.pk not in related and t.pk not in used
         ]
         base.update(
             requirements=[{"code": r.requirement.code, "text": r.requirement.description} for r in relations],

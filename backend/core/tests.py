@@ -155,22 +155,21 @@ class ApiTests(TestCase):
         m1, m2 = missions["Primeiros Rastros"]["id"], missions["Conectando Pontos"]["id"]
         self.assertTrue(self.submit(token, m1, 1, RIGHT1).json()["correct"])
 
-        # exercício sem testes órfãos continua com exatamente os testes do gabarito
-        plain = self.call("get", f"student/missions/{m1}/challenges/1", token=token).json()
-        self.assertEqual(sorted(t["code"] for t in plain["tests"]), ["CT01", "CT02", "CT03"])
-
-        # CT04 a CT07 não participam de nenhuma relação em "Conectando Pontos"
-        payload = self.call("get", f"student/missions/{m2}/challenges/1", token=token).json()
-        codes = [t["code"] for t in payload["tests"]]
-        self.assertEqual(sorted(codes), ["CT01", "CT02", "CT03", "CT04", "CT05", "CT06", "CT07"])
+        # CT04 de "Primeiros Rastros" não participa de nenhuma relação nem de outro desafio
+        payload = self.call("get", f"student/missions/{m1}/challenges/1", token=token).json()
+        self.assertEqual(sorted(t["code"] for t in payload["tests"]), ["CT01", "CT02", "CT03", "CT04"])
         self.assertEqual(len(payload["requirements"]), 3)
 
-        wrong = self.submit(token, m2, 1, {"links": {"RF01": "CT01", "RF02": "CT02", "RF03": "CT04"}}).json()
+        wrong = self.submit(token, m1, 1, {"links": {"RF01": "CT01", "RF02": "CT02", "RF03": "CT04"}}).json()
         self.assertFalse(wrong["correct"])
         text = wrong["feedback"]["sections"][0]["text"]
         self.assertIn("RF03 ↔ CT04", text)
-        self.assertIn("Tentar fazer login durante o período de bloqueio", text)
-        self.assertTrue(self.submit(token, m2, 1, RIGHT1).json()["correct"])
+        self.assertIn("Entrar com o e-mail e a senha de uma conta já cadastrada", text)
+        self.assertTrue(self.submit(token, m1, 1, RIGHT1).json()["correct"])
+
+        # órfãos usados como evidência, alternativa ou resposta de outro desafio não viram distratores
+        reserved = self.call("get", f"student/missions/{m2}/challenges/1", token=token).json()
+        self.assertEqual(sorted(t["code"] for t in reserved["tests"]), ["CT01", "CT02", "CT03"])
 
     # ------------------------------------------------ fluxo da professora
     def test_teacher_dashboard_and_results_reflect_attempts(self):

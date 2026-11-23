@@ -47,6 +47,7 @@ EXERCISES = [
             {"code": "CT01", "description": "Preencher o formulário com dados válidos e enviar.", "expected": "Conta criada com sucesso."},
             {"code": "CT02", "description": "Cadastrar um usuário com um e-mail que já existe.", "expected": "Mensagem de e-mail já cadastrado."},
             {"code": "CT03", "description": "Concluir um cadastro válido e consultar a caixa de entrada.", "expected": "E-mail de confirmação recebido."},
+            {"code": "CT04", "description": "Entrar com o e-mail e a senha de uma conta já cadastrada.", "expected": "Acesso liberado."},
         ],
         "relations": [
             {"rf": "RF01", "ct": "CT01", "explanation": "CT01 cria a conta com dados válidos, que é o comportamento central de RF01."},
