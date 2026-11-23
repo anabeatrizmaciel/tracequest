@@ -3,16 +3,16 @@
 ## Front-end
 
 ### Geral
-- `/` — escolha de perfil
-- `/login/aluno` — login/cadastro do estudante
-- `/login/professor` — login da professora
+- `/`: escolha de perfil
+- `/login/aluno`: login e cadastro do estudante
+- `/login/professor`: login da professora
 
 ### Estudante (exige login de estudante)
 - `/aluno/inicio`
 - `/aluno/missoes` (aceita `?q=` para buscar)
 - `/aluno/missao/:id`
 - `/aluno/missao/:id/desafio/:n`
-- `/aluno/missao/:id/desafio/:n/feedback` — acerto ou erro, conforme a última tentativa
+- `/aluno/missao/:id/desafio/:n/feedback`: acerto ou erro, conforme a última tentativa
 - `/aluno/missao/:id/concluida`
 - `/aluno/progresso`
 - `/aluno/conquistas`

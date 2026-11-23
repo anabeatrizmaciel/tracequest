@@ -95,6 +95,10 @@ cd backend
 
 O roteiro de teste manual para o usuário está em [`TESTE.md`](TESTE.md); as rotas, em [`ROTAS.md`](ROTAS.md).
 
+## Fontes e licenças
+
+As fontes **Fredoka** (títulos) e **Nunito** (textos) vêm do Google Fonts e usam a licença SIL Open Font License 1.1, que permite uso livre, inclusive em trabalhos acadêmicos e comerciais. Elas são carregadas pela internet; sem conexão, o navegador usa uma fonte sem serifa padrão e o sistema continua funcionando. As bibliotecas usadas (React, React Router, Vite e Django) têm licenças livres (MIT e BSD).
+
 ## Logo e mascote
 
 A marca é desenhada em CSS. Para usar os arquivos oficiais, coloque `tracequest-logo.png` e `trace-mascote.png` em `src/assets/` e
