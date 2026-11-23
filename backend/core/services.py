@@ -284,7 +284,7 @@ def teacher_dashboard():
     completed = ExerciseSession.objects.filter(completed_at__isnull=False, exercise__in=exercises).count()
     denom = total_students * len(exercises)
     rows = student_rows()
-    wrong = Counter(Attempt.objects.filter(correct=False).values_list("kind", flat=True))
+    wrong = Counter(a.kind for st in students for a in scored_attempts(st) if not a.correct)
     total_wrong = sum(wrong.values())
     difficulties = [
         {
