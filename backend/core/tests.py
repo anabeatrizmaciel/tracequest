@@ -247,6 +247,83 @@ class ApiTests(TestCase):
         detail["publish"] = True
         self.assertEqual(self.call("put", f"teacher/exercises/{ex_id}", detail, teacher).status_code, 200)
 
+    def test_publish_requires_explanations_but_draft_does_not(self):
+        teacher = self.login("camila@uea.edu.br")
+        payload = {
+            "title": "Cadastro de cliente",
+            "level": "Iniciante",
+            "description": "Teste",
+            "missionOrder": 9,
+            "xp": 80,
+            "publish": True,
+            "requirements": [
+                {"code": "RF01", "description": "Cadastrar cliente."},
+                {"code": "RF02", "description": "Editar cliente."},
+                {"code": "RF03", "description": "Excluir cliente."},
+            ],
+            "tests": [
+                {"code": "CT01", "description": "Cadastrar com dados válidos.", "expected": "Cliente criado."},
+                {"code": "CT02", "description": "Editar o nome.", "expected": "Nome alterado."},
+                {"code": "CT03", "description": "Excluir um cliente.", "expected": "Cliente removido."},
+            ],
+            "relations": [
+                {"rf": "RF01", "ct": "CT01", "explanation": "CT01 cadastra um cliente."},
+                {"rf": "RF02", "ct": "CT02", "explanation": ""},
+            ],
+        }
+
+        # publicar com uma relação sem justificativa é recusado e a mensagem identifica a relação
+        refused = self.call("post", "teacher/exercises/new", payload, teacher)
+        self.assertEqual(refused.status_code, 400)
+        self.assertEqual(refused.json()["details"], ["Relação RF02 ↔ CT02: informe a justificativa para publicar."])
+
+        # o mesmo exercício salva como rascunho
+        draft = self.call("post", "teacher/exercises/new", dict(payload, publish=False), teacher)
+        self.assertEqual(draft.status_code, 201, draft.content)
+        self.assertEqual(draft.json()["status"], "Rascunho")
+        ex_id = draft.json()["id"]
+
+        # publicar o rascunho pelo botão da lista também passa pela validação
+        toggle = self.call("post", f"teacher/exercises/{ex_id}/status", {"publish": True}, teacher)
+        self.assertEqual(toggle.status_code, 400)
+
+        # preenchida a justificativa, publica
+        full = self.call("get", f"teacher/exercises/{ex_id}", token=teacher).json()
+        full["relations"][1]["explanation"] = "CT02 edita o nome do cliente."
+        full["publish"] = True
+        self.assertEqual(self.call("put", f"teacher/exercises/{ex_id}", full, teacher).json()["status"], "Publicado")
+
+        # desafio de cobertura sem feedbackWrong é recusado ao publicar
+        full["coverage"] = {
+            "requirement": "RF01",
+            "evidence": ["CT01"],
+            "correct": "full",
+            "feedbackCorrect": "CT01 cobre o cadastro.",
+            "feedbackWrong": "",
+        }
+        refused = self.call("put", f"teacher/exercises/{ex_id}", full, teacher)
+        self.assertEqual(refused.status_code, 400)
+        self.assertEqual(
+            refused.json()["details"],
+            ["Desafio de cobertura: preencha “Orientação quando errar” para publicar."],
+        )
+        # como rascunho, o campo vazio é aceito
+        self.assertEqual(self.call("put", f"teacher/exercises/{ex_id}", dict(full, publish=False), teacher).status_code, 200)
+
+        # o mesmo vale para o desafio da evidência que falta
+        full["coverage"]["feedbackWrong"] = "Compare RF01 com CT01."
+        full["missing"] = {
+            "requirement": "RF01",
+            "evidence": ["CT01"],
+            "candidates": ["CT02", "CT03"],
+            "correct": "CT02",
+            "feedbackCorrect": "",
+            "feedbackWrong": "",
+        }
+        refused = self.call("put", f"teacher/exercises/{ex_id}", full, teacher)
+        self.assertEqual(refused.status_code, 400)
+        self.assertEqual(len(refused.json()["details"]), 2)
+
     def test_publish_draft_from_seed(self):
         teacher = self.login("camila@uea.edu.br")
         drafts = [e for e in self.call("get", "teacher/exercises", token=teacher).json()["exercises"] if e["status"] == "Rascunho"]

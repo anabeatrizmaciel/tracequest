@@ -107,7 +107,10 @@ def validate(data, publish):
             continue
         used_rf.add(rf)
         used_ct.add(ct)
-        relations.append({"rf": rf, "ct": ct, "explanation": _s(rel.get("explanation"))})
+        explanation = _s(rel.get("explanation"))
+        if publish and not explanation:
+            problems.append(f"Relação {rf} ↔ {ct}: informe a justificativa para publicar.")
+        relations.append({"rf": rf, "ct": ct, "explanation": explanation})
 
     def sub(key, with_candidates):
         raw = data.get(key)
@@ -141,6 +144,11 @@ def validate(data, publish):
                 problems.append(f"{name}: informe ao menos duas alternativas.")
             if out["correct"] in evidence:
                 problems.append(f"{name}: a alternativa correta não pode ser uma evidência que já existe.")
+        if publish:
+            if not out["feedbackCorrect"]:
+                problems.append(f"{name}: preencha “Explicação quando acertar” para publicar.")
+            if not out["feedbackWrong"]:
+                problems.append(f"{name}: preencha “Orientação quando errar” para publicar.")
         return out
 
     coverage, missing = sub("coverage", False), sub("missing", True)
