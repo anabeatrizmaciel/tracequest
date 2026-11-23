@@ -113,9 +113,12 @@ Saia e entre como **camila@uea.edu.br / tracequest**.
 | 3.2.2 | Busque `cobertura` | Só “Caça à Cobertura” | [ ] |
 | 3.2.3 | **Criar exercício** → deixe o título vazio → Continuar → **Salvar e publicar** | Erro “Informe o título do exercício.” | [ ] |
 | 3.2.4 | Preencha: título `Pagamento`, nível Iniciante, requisitos **RF01** “O cliente paga com cartão.” e **RF02** “O sistema emite recibo.”; testes **CT01** “Pagar com cartão válido.” (esperado “Pago.”) e **CT02** “Pagar e conferir o recibo.” (esperado “Recibo emitido.”) | Campos aceitam texto; “+ Adicionar” cria novas linhas com código automático | [ ] |
-| 3.2.5 | Etapa 2: **+ Nova relação** duas vezes (RF01↔CT01 e RF02↔CT02) com justificativas | Selects só oferecem os códigos cadastrados | [ ] |
-| 3.2.6 | Repita o **mesmo CT** nas duas relações → **Salvar e publicar** | Erro informando que o CT aparece em mais de uma relação | [ ] |
-| 3.2.7 | Corrija e clique **Salvar e publicar** | Volta à lista com “Pagamento” **Publicado** | [ ] |
+| 3.2.5 | Etapa 2: **+ Nova relação** duas vezes (RF01↔CT01 e RF02↔CT02). Em RF01↔CT01 escreva a justificativa “CT01 paga com cartão.” e **deixe em branco a justificativa de RF02↔CT02** | Selects só oferecem os códigos cadastrados | [ ] |
+| 3.2.5a | Clique **Salvar e publicar** | Não publica; aparece o aviso “Revise antes de salvar:” com **“Relação RF02 ↔ CT02: informe a justificativa para publicar.”** (só essa mensagem), logo acima dos botões; você continua na etapa 2 | [ ] |
+| 3.2.5b | Com o mesmo campo ainda em branco, clique **Salvar rascunho** | Volta à lista com “Pagamento” (EX-04) como **Rascunho**; rascunho aceita justificativa vazia | [ ] |
+| 3.2.5c | Em “Pagamento” clique **Editar** → Continuar → na etapa 2, a justificativa de RF01↔CT01 aparece preenchida e a de RF02↔CT02 vazia. Escreva “CT02 confere o recibo.” na segunda | Campo aceita o texto | [ ] |
+| 3.2.6 | Repita o **mesmo CT** (CT01) nas duas relações → **Salvar e publicar** | Erro informando que **CT01 aparece em mais de uma relação** (e, junto, o aviso de que são necessárias ao menos 2 relações) | [ ] |
+| 3.2.7 | Volte a RF02↔CT02 e clique **Salvar e publicar** | Volta à lista com “Pagamento” **Publicado** | [ ] |
 | 3.2.8 | **Publicar** em “Caça à Cobertura” | Passa para **Publicado** | [ ] |
 | 3.2.9 | **Editar** “Pagamento” → troque o texto de uma justificativa → Salvar rascunho | Status volta para **Rascunho** (some para os estudantes) | [ ] |
 
